@@ -13,6 +13,8 @@ type AddTodoType = {
   editTodoName: string;
 };
 
+console.log({env: import.meta.env})
+
 function App() {
   const { register, handleSubmit, reset } = useForm<AddTodoType>();
   const [todos, setTodos] = useState<TodoTypes[]>([]);
@@ -22,7 +24,7 @@ function App() {
     const { todo } = event;
     console.log(todo);
     await axios
-      .post("http://localhost:3000/add", {
+      .post(`http://${import.meta.env.VITE_API_HOST}:${import.meta.env.VITE_API_PORT}/add`, {
         data: {
           todo,
         },
@@ -41,7 +43,7 @@ function App() {
     console.log(id);
 
     await axios
-      .delete("http://localhost:3000/delete", {
+      .delete(`http://${import.meta.env.VITE_API_HOST}:${import.meta.env.VITE_API_PORT}/delete`, {
         data: {
           id,
         },
@@ -59,7 +61,7 @@ function App() {
 
   const editTodo = async ({ editTodoName }: AddTodoType) => {
     await axios
-      .put("http://localhost:3000/update", {
+      .put(`http://${import.meta.env.VITE_API_HOST}:${import.meta.env.VITE_API_PORT}/update`, {
         data: {
           id: isEdit.id,
           todo: editTodoName,
@@ -80,7 +82,7 @@ function App() {
   };
 
   useEffect(() => {
-    axios.get("http://localhost:3000").then((response) => {
+    axios.get(`http://${import.meta.env.VITE_API_HOST}:${import.meta.env.VITE_API_PORT}`).then((response) => {
       console.log(response.data.todos);
       const { todos } = response.data;
       setTodos(todos);
